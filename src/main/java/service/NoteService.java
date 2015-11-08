@@ -1,5 +1,7 @@
 package main.java.service;
 
+import java.util.Date;
+
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -15,6 +17,7 @@ import org.omg.CORBA.portable.ApplicationException;
 import main.java.dao.interfaces.NoteDao;
 import main.java.model.Note;
 import main.java.model.User;
+import main.java.model.rest.RestAddNote;
 import main.java.model.rest.RestUpdateNote;
 import main.java.validator.EmailValidator;
 import sun.misc.BASE64Decoder;
@@ -33,7 +36,7 @@ public class NoteService {
 	@Path("/getNotes")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getNotes(@QueryParam("userId")Long userId, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response getNotes(@QueryParam("userId")Long userId, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString) && !user.getId().equals(userId)){
@@ -51,7 +54,7 @@ public class NoteService {
 	@Path("/getNote")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getNote(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response getNote(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString)){
@@ -79,39 +82,69 @@ public class NoteService {
 	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response add(RestUpdateNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response add(RestAddNote addNote, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
+			Note note = new Note();
+			if(null != addNote.getNote() && addNote.getNote().isEmpty()){
+				note.setNote(addNote.getNote());
+			}
+			if(null != addNote.getTitle() && addNote.getTitle().isEmpty()){
+				note.setTitle(addNote.getTitle());
+			}
+			note.setCreatedTime(new Date());
+			note = noteDao.insert(note);
+			return Response.ok().entity(note).build();
 		}catch(Exception e){
-			throw new ApplicationException(e.getMessage(),null);
+			return Response.status(401).entity("Insert not successful.").build();
 		}
-		return Response.ok().build();
 	}
 	
 	@GET
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(RestUpdateNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response update(RestUpdateNote updateNote, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
+			
+			Note note = null;
+			for(Note curNote:user.getNotes()){
+				if(curNote.getId().equals(updateNote.getId())){
+					note = curNote;
+					break;
+				}
+			}
+			
+			if(note == null){
+				return Response.status(401).entity("User authentication unsuccessful.").build();
+			}else{
+				if(null != updateNote.getNote() && updateNote.getNote().isEmpty()){
+					note.setNote(updateNote.getNote());
+				}
+				if(null != updateNote.getTitle() && updateNote.getTitle().isEmpty()){
+					note.setTitle(updateNote.getTitle());
+				}
+				note.setLastUpdatedTime(new Date());
+				noteDao.update(note);
+				return Response.ok().entity(note).build();
+			}
 		}catch(Exception e){
-			throw new ApplicationException(e.getMessage(),null);		
+			return Response.status(401).entity("Update not successful.").build();		
 		}
-		return Response.ok().build();
 	}
 	
 	@GET
 	@Path("/delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response delete(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString)){
