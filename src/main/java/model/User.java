@@ -1,6 +1,7 @@
 package main.java.model;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
@@ -42,7 +43,7 @@ public class User extends BaseModel {
 	private Date lastUpdatedTime;
 	@OneToMany(fetch=FetchType.EAGER)
 	@JoinColumn(name="userId")
-	private User user;
+	private List<Note> notes;
 	
 	public User(){
 		
@@ -88,13 +89,11 @@ public class User extends BaseModel {
 		this.lastUpdatedTime = lastUpdatedTime;
 	}
 
-	public User getUser() {
-		return user;
+	public List<Note> getNotes() {
+		return notes;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setNotes(List<Note> notes) {
+		this.notes = notes;
 	}
-	
-
 }

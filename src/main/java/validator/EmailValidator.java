@@ -12,5 +12,4 @@ public class EmailValidator {
 	public User findUser(String email, String password){
 		return userDao.getByEmailAndPassword(email,password);
 	}
-
 }

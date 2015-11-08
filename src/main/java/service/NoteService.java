@@ -6,9 +6,13 @@ import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.omg.CORBA.portable.ApplicationException;
+
+import main.java.model.Note;
 import main.java.model.User;
 import main.java.model.rest.RestSearchNote;
 import main.java.validator.EmailValidator;
@@ -26,16 +30,17 @@ public class NoteService {
 	@Path("/getNotes")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getNotes(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+	public Response getNotes(@QueryParam("userId")Long userId, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
-			if(!isUserAuthenticated(authString)){
+			if(!isUserAuthenticated(authString) && !user.getId().equals(userId)){
 				return Response.status(401).entity("User is not authenticated").build();
+			}else{
+				return Response.ok().entity(user.getNotes()).build();
 			}
 		}catch(Exception e){
-			
+			throw new ApplicationException(e.getMessage(),null);
 		}
-		return Response.ok().build();
 	}
 	
 	
@@ -43,30 +48,42 @@ public class NoteService {
 	@Path("/getNote")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response getNote(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+	public Response getNote(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User is not authenticated").build();
 			}
-		}catch(Exception e){
+			Note note = null;
+			for(Note curNote:user.getNotes()){
+				if(curNote.getId().equals(noteId)){
+					note = curNote;
+					break;
+				}
+			}
 			
+			if(note == null){
+				return Response.status(401).entity("User is not authenticated").build();
+			}else{
+				return Response.ok().entity(note).build();
+			}
+		}catch(Exception e){
+			throw new ApplicationException(e.getMessage(),null);
 		}
-		return Response.ok().build();
 	}
 	
 	@GET
 	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response add(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+	public Response add(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User is not authenticated").build();
 			}
 		}catch(Exception e){
-			
+			throw new ApplicationException(e.getMessage(),null);
 		}
 		return Response.ok().build();
 	}
@@ -75,14 +92,14 @@ public class NoteService {
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+	public Response update(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User is not authenticated").build();
 			}
 		}catch(Exception e){
-			
+			throw new ApplicationException(e.getMessage(),null);		
 		}
 		return Response.ok().build();
 	}
@@ -91,14 +108,14 @@ public class NoteService {
 	@Path("/delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+	public Response delete(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User is not authenticated").build();
 			}
 		}catch(Exception e){
-			
+			throw new ApplicationException(e.getMessage(),null);
 		}
 		return Response.ok().build();
 	}
