@@ -39,6 +39,9 @@ public class NoteService {
 	public Response getNotes(@QueryParam("userId")Long userId, @HeaderParam("authorization") String authString){
 		
 		try{
+			if(null == userId || 0l == userId){
+				return Response.status(401).entity("Note Id can not be empty.").build();
+			}
 			if(!isUserAuthenticated(authString) && !user.getId().equals(userId)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}else{
@@ -57,9 +60,14 @@ public class NoteService {
 	public Response getNote(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString){
 		
 		try{
+			if(null == noteId || 0l == noteId){
+				return Response.status(401).entity("Note Id can not be empty.").build();
+			}
+			
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
+			
 			Note note = null;
 			for(Note curNote:user.getNotes()){
 				if(curNote.getId().equals(noteId)){
@@ -110,6 +118,10 @@ public class NoteService {
 	public Response update(RestUpdateNote updateNote, @HeaderParam("authorization") String authString){
 		
 		try{
+			if(null == updateNote.getId() || 0l == updateNote.getId()){
+				return Response.status(401).entity("Note Id can not be empty.").build();
+			}
+			
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
@@ -150,6 +162,10 @@ public class NoteService {
 			if(!isUserAuthenticated(authString)){
 				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
+			if(null == noteId|| 0l == noteId){
+				return Response.status(401).entity("Note Id can not be empty.").build();
+			}
+			
 			Note note = null;
 			for(Note curNote:user.getNotes()){
 				if(curNote.getId().equals(noteId)){

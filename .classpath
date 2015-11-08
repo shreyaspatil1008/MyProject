@@ -6,12 +6,12 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.tomcat.runtimeTarget/Apache Tomcat v7.0">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="D:/Arhata Enterprizes/software/Java/tomcat-7.0.12/lib/jasper.jar"/>
+	<classpathentry kind="lib" path="D:/Arhata Enterprizes/software/Java/tomcat-7.0.12/lib/jasper.jar"/>
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/aether-api-1.0.2.v20150114.jar"/>
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/aether-connector-basic-1.0.2.v20150114.jar"/>
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/aether-impl-1.0.2.v20150114.jar"/>
@@ -53,12 +53,12 @@
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/wagon-http-2.9-shaded.jar"/>
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/wagon-http-shared-2.9.jar"/>
 	<classpathentry kind="lib" path="C:/apache-maven-3.3.3-bin/apache-maven-3.3.3/lib/wagon-provider-api-2.9.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+	<classpathentry exported="true" kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
 		<attributes>
 			<attribute name="maven.pomderived" value="true"/>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
