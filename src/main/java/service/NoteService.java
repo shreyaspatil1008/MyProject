@@ -12,9 +12,10 @@ import javax.ws.rs.core.Response;
 
 import org.omg.CORBA.portable.ApplicationException;
 
+import main.java.dao.interfaces.NoteDao;
 import main.java.model.Note;
 import main.java.model.User;
-import main.java.model.rest.RestSearchNote;
+import main.java.model.rest.RestUpdateNote;
 import main.java.validator.EmailValidator;
 import sun.misc.BASE64Decoder;
 
@@ -25,6 +26,8 @@ public class NoteService {
 	private User user;
 	@Inject
 	private EmailValidator emailValidator;
+	@Inject
+	private NoteDao noteDao;
 	
 	@GET
 	@Path("/getNotes")
@@ -34,12 +37,12 @@ public class NoteService {
 		
 		try{
 			if(!isUserAuthenticated(authString) && !user.getId().equals(userId)){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}else{
 				return Response.ok().entity(user.getNotes()).build();
 			}
 		}catch(Exception e){
-			throw new ApplicationException(e.getMessage(),null);
+			return Response.status(401).entity("No notes with userId "+userId).build();
 		}
 	}
 	
@@ -52,7 +55,7 @@ public class NoteService {
 		
 		try{
 			if(!isUserAuthenticated(authString)){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
 			Note note = null;
 			for(Note curNote:user.getNotes()){
@@ -63,12 +66,12 @@ public class NoteService {
 			}
 			
 			if(note == null){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}else{
 				return Response.ok().entity(note).build();
 			}
 		}catch(Exception e){
-			throw new ApplicationException(e.getMessage(),null);
+			return Response.status(401).entity("No notes with userId "+noteId).build();
 		}
 	}
 	
@@ -76,11 +79,11 @@ public class NoteService {
 	@Path("/add")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response add(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response add(RestUpdateNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
 		}catch(Exception e){
 			throw new ApplicationException(e.getMessage(),null);
@@ -92,11 +95,11 @@ public class NoteService {
 	@Path("/update")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response update(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response update(RestUpdateNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
 			}
 		}catch(Exception e){
 			throw new ApplicationException(e.getMessage(),null);		
@@ -108,16 +111,29 @@ public class NoteService {
 	@Path("/delete")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response delete(RestSearchNote searchNote, @HeaderParam("authorization") String authString) throws ApplicationException{
+	public Response delete(@QueryParam("noteId")Long noteId, @HeaderParam("authorization") String authString) throws ApplicationException{
 		
 		try{
 			if(!isUserAuthenticated(authString)){
-				return Response.status(401).entity("User is not authenticated").build();
+				return Response.status(401).entity("User authentication unsuccessful.").build();
+			}
+			Note note = null;
+			for(Note curNote:user.getNotes()){
+				if(curNote.getId().equals(noteId)){
+					note = curNote;
+					break;
+				}
+			}
+			
+			if(note == null){
+				return Response.status(401).entity("User authentication unsuccessful.").build();
+			}else{
+				noteDao.delete(note);
+				return Response.ok().entity(note).build();
 			}
 		}catch(Exception e){
-			throw new ApplicationException(e.getMessage(),null);
+			return Response.status(401).entity("Delete not successful.").build();
 		}
-		return Response.ok().build();
 	}
 	
 	@SuppressWarnings("restriction")

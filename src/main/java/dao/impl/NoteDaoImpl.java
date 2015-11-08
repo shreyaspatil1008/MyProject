@@ -12,18 +12,20 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 public class NoteDaoImpl implements NoteDao{
-	public void insert(Note note){
+	public Note insert(Note note){
         Session session = HibernateUtil.getSessionFactory().openSession();
         note.setCreatedTime(new Date());
         Transaction transaction = session.beginTransaction();
         try{
-            session.save(note);
+            note.setId((Long)session.save(note));
             transaction.commit();
+            
         }catch(Exception exception){
             transaction.rollback();
         }finally{
             session.close();
         }
+		return note;
     }
 
     public Note getById(Long notesId){
