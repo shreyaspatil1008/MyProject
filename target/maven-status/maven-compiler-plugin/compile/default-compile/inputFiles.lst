@@ -1,4 +1,12 @@
+C:\Project\project\src\main\java\dao\impl\NoteDaoImpl.java
+C:\Project\project\src\main\java\dao\interfaces\NoteDao.java
 C:\Project\project\src\main\java\model\Note.java
+C:\Project\project\src\main\java\service\NoteService.java
+C:\Project\project\src\main\java\dao\impl\UserDaoImpl.java
+C:\Project\project\src\main\java\dao\interfaces\UserDao.java
 C:\Project\project\src\main\java\model\User.java
+C:\Project\project\src\main\java\model\rest\RestSearchNote.java
+C:\Project\project\src\main\java\util\HibernateUtil.java
 C:\Project\project\src\main\java\model\base\Model.java
 C:\Project\project\src\main\java\model\base\BaseModel.java
+C:\Project\project\src\main\java\validator\EmailValidator.java
