@@ -1,6 +1,6 @@
 package main.java.validator;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 
 import main.java.dao.interfaces.UserDao;
 import main.java.model.User;

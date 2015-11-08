@@ -1,5 +1,6 @@
 package main.java.service;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -13,7 +14,6 @@ import main.java.model.rest.RestSearchNote;
 import main.java.validator.EmailValidator;
 import sun.misc.BASE64Decoder;
 
-import com.google.inject.Inject;
 
 @Path("/note")
 public class NoteService {
@@ -27,6 +27,71 @@ public class NoteService {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response getNotes(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+		
+		try{
+			if(!isUserAuthenticated(authString)){
+				return Response.status(401).entity("User is not authenticated").build();
+			}
+		}catch(Exception e){
+			
+		}
+		return Response.ok().build();
+	}
+	
+	
+	@GET
+	@Path("/getNote")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getNote(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+		
+		try{
+			if(!isUserAuthenticated(authString)){
+				return Response.status(401).entity("User is not authenticated").build();
+			}
+		}catch(Exception e){
+			
+		}
+		return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/add")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response add(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+		
+		try{
+			if(!isUserAuthenticated(authString)){
+				return Response.status(401).entity("User is not authenticated").build();
+			}
+		}catch(Exception e){
+			
+		}
+		return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/update")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response update(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
+		
+		try{
+			if(!isUserAuthenticated(authString)){
+				return Response.status(401).entity("User is not authenticated").build();
+			}
+		}catch(Exception e){
+			
+		}
+		return Response.ok().build();
+	}
+	
+	@GET
+	@Path("/delete")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response delete(RestSearchNote searchNote, @HeaderParam("authorization") String authString){
 		
 		try{
 			if(!isUserAuthenticated(authString)){
