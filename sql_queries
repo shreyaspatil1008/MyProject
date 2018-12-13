@@ -1,0 +1,12 @@
+insert into vendor values (1,'Green Cloud');
+insert into users values (1,'admin','$2a$04$I9Q2sDc4QGGg5WNTLmsz0.fvGv3OjoZyj81PrSFyGOqMphqfS2qKu',1);
+insert into globalproperties values ('g2Url','http://us1d3ci08.ideasdev.int:8081/G2');
+insert into globalproperties values ('g2Username','ideas_adm');
+insert into globalproperties values ('g2Password','shout-952');
+insert into globalproperties values ('g2UploadUsername','4upload');
+insert into globalproperties values ('g2UploadPassword','1nonly1');
+insert into globalproperties values ('gtantType','authorization_code');
+insert into globalproperties values ('authority','ADMIN');
+insert into globalproperties values ('scope','read');
+insert into globalproperties values ('clientId','ideas-client');
+insert into globalproperties values ('clientSecret','$2a$10$55VnjVCcCmUB4tYmXhjlC.KSsTkziMyxWaqFPWg/MIst/PJAuuPiC');
